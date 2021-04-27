@@ -76,3 +76,18 @@
    (select id from resources where description='roles'),
    (select id from roles where description='super_admin'),
     '78589c8b-d46f-4414-97b9-6cb1485e6459',2,(select id from applications where name='Resource App' limit 1),true);
+	
+   INSERT INTO role_resources_permissions(
+   created_at, deleted_at, updated_at, permission_id, resource_id, role_id,organisation_id,organisation_level,application_id,granted)
+   VALUES (now(),now(), now(), (select id from permissions where code='POST'),
+   (select id from resources where description='roles'),
+   (select id from roles where description='super_admin'),
+    '78589c8b-d46f-4414-97b9-6cb1485e6459',2,(select id from applications where name='Resource App' limit 1),true);
+	
+	
+  INSERT INTO role_resources_permissions(
+   created_at, deleted_at, updated_at, permission_id, resource_id, role_id,organisation_id,organisation_level,application_id,granted)
+   VALUES (now(),now(), now(), (select id from permissions where code='PATCH'),
+   (select id from resources where description='roles'),
+   (select id from roles where description='super_admin'),
+    '78589c8b-d46f-4414-97b9-6cb1485e6459',2,(select id from applications where name='Resource App' limit 1),true);
