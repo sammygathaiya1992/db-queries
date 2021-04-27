@@ -1,0 +1,78 @@
+--add permissions
+    INSERT INTO public.permissions(
+	created_at, deleted_at, updated_at, code, description, status)
+	VALUES (now(),now(), now(), 'UPDATE', 'user update', true);
+	
+	INSERT INTO public.permissions(
+	created_at, deleted_at, updated_at, code, description, status)
+	VALUES (now(),now(), now(), 'CREATE', 'user create', true);
+	
+	INSERT INTO public.permissions(
+	created_at, deleted_at, updated_at, code, description, status)
+	VALUES (now(),now(), now(), 'DELETE', 'user delete', true);
+	
+	INSERT INTO public.permissions(
+	created_at, deleted_at, updated_at, code, description, status)
+	VALUES (now(),now(), now(), 'GET', 'user fetch', true);
+	
+	INSERT INTO public.permissions(
+	created_at, deleted_at, updated_at, code, description, status)
+	VALUES (now(),now(), now(), 'PATCH', 'user activate', true);
+	
+	
+--add resources	
+    INSERT INTO public.resources(
+	created_at, deleted_at, updated_at, code, description, status,global)
+	VALUES (now(),now(), now(), 'apps', 'apps', true,false);
+	
+	INSERT INTO public.resources(
+	created_at, deleted_at, updated_at, code, description, status,global)
+	VALUES (now(),now(), now(), 'permissions', 'permissions', true,false);
+	
+	INSERT INTO public.resources(
+	created_at, deleted_at, updated_at, code, description, status,global)
+	VALUES (now(),now(), now(), 'resources', 'resources', true,false);
+	
+	INSERT INTO public.resources(
+	created_at, deleted_at, updated_at, code, description, status,global)
+	VALUES (now(),now(), now(), 'roles', 'roles', true,false);
+	
+	
+--add menus
+  INSERT INTO public.menus(
+  created_at, deleted_at, updated_at, icon, link, name, resource_id, status)
+  VALUES (now(), now(), now(), 'flat_icon', 'https://www.google.com/','product_menus', (select id from resources where code='apps' limit 1), 'true');
+	
+	
+--add role
+    INSERT INTO public.roles(
+	created_at, deleted_at, updated_at, code, description, status)
+	VALUES (now(),now(), now(), 'role_description', 'super_admin', true);
+	
+--user
+    INSERT INTO public.users(
+	created_at, deleted_at, updated_at, email_id, first_name, last_name, password, password_expiry, password_refresh_token, refresh_token, status, two_factor_channel, two_factor_enabled)
+	VALUES (now(), now(), now(), 'soko.dev@sokowatch.com', 'Soko', 'Dev', '$2y$12$GibEAhSigUjVk7CMuCcFAukRMOd2JNoBAH.emPQ5i6gX68tn7H1Fu', now(), '', '', true, 'soko.Dev@sokowatch.com', true);
+	
+--map user to role
+    INSERT INTO public.users_roles(
+	created_at, deleted_at, updated_at, role_id, user_id)
+	VALUES (now(), now(), now(),(select id from roles limit 1) , (select id from users where email_id='soko.dev@sokowatch.com' 1));
+	
+--add application
+    INSERT INTO public.applications(
+	created_at, deleted_at, updated_at, client_id, client_secret, description, domain_url, error_redirect_url, name, status, success_redirect_url)
+	VALUES ( now(), now(), now(), '9580b994-3097-4022-abc1-668707501cb8', '9580b994-3097-4022-abc1-668707501cb8', 'Resource Application', '/resources', 'http://127.0.0.1:50310/browser/', 'Resource App', 'true', 'http://127.0.0.1:50310/browser/');
+
+--add configuration
+    INSERT INTO public.configurations(
+	 created_at, deleted_at, updated_at, code, config_group, description, status, value)
+	VALUES (now(), now(), now(), 'C001', 'CONFIG_GROUP', 'CONFIG_DESC', 'true' ,'CONFIG_VALUE');
+	
+--Role-resource-permission-mapping
+   INSERT INTO role_resources_permissions(
+   created_at, deleted_at, updated_at, permission_id, resource_id, role_id,organisation_id,organisation_level,application_id,granted)
+   VALUES (now(),now(), now(), (select id from permissions where code='GET'),
+   (select id from resources where description='roles'),
+   (select id from roles where description='super_admin'),
+    '78589c8b-d46f-4414-97b9-6cb1485e6459',2,(select id from applications where name='Resource App' limit 1),true);
